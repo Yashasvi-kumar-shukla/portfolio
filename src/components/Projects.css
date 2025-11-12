@@ -7,26 +7,37 @@
   position: relative;
 }
 
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
+.carousel-wrap {
+  perspective: 600px;
+  padding: 2rem 0;
+}
+
+.carousel {
+  display: flex; 
+  overflow-x: scroll; 
+  padding-bottom: 2rem; 
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
 }
 
 .card {
   text-decoration: none;
   color: #fff;
   transition: all 0.3s ease;
+  flex-shrink: 0;
+  width: 300px;
+  margin: 0 1rem; 
 }
 
-/* Glassmorphism Style */
 .glass {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 15px;
   padding: 2rem;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }

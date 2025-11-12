@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './Projects.css';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 function Projects() {
   const projects = [
@@ -18,26 +18,52 @@ function Projects() {
       title: 'Resume Matcher & JD Scrubber',
       desc: 'Web application that compares resumes with job descriptions using ML models.',
       link: 'https://github.com/Yashasvi-kumar-shukla/JD-resume-scrabber'
+    },
+    {
+      title: 'Tvaćham: Full-Stack E-Commerce',
+      desc: 'A full-stack, deployed sample e-commerce site for a luxury skincare brand. Built with React (Framer Motion), Node.js, Express, and PostgreSQL. Features a live product API, persistent cart, and a complete checkout flow.',
+      link: 'https://github.com/Yashasvi-kumar-shukla/tvacham-sample-ecom'
     }
   ];
+
+  const ref = useRef(null);
+  const { scrollXProgress } = useScroll({ container: ref });
+  const rotateY = useTransform(scrollXProgress, [0, 1], ['8deg', '-8deg']);
+  const shadowX = useTransform(scrollXProgress, [0, 1], ['-15px', '15px']);
 
   return (
     <section id="projects" className="projects">
       <h2>Projects</h2>
-      <div className="project-grid">
-        {projects.map((proj, idx) => (
-          <motion.a
-            key={idx}
-            href={proj.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="glass card"
-            whileHover={{ scale: 1.05 }}
-          >
-            <h3>{proj.title}</h3>
-            <p>{proj.desc}</p>
-          </motion.a>
-        ))}
+      <div className="carousel-wrap">
+        <motion.div 
+          className="carousel" 
+          ref={ref} 
+          style={{ rotateY }} 
+        >
+          {projects.map((proj, idx) => {
+            const cardShadow = useTransform(
+              scrollXProgress, 
+              [0, 1], 
+              ['-15px 5px 20px rgba(0,0,0,0.3)', '15px 5px 20px rgba(0,0,0,0.3)']
+            );
+
+            return (
+              <motion.a
+                key={idx}
+                href={proj.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass card"
+                // 6. Apply the dynamic box shadow
+                style={{ boxShadow: cardShadow }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <h3>{proj.title}</h3>
+                <p>{proj.desc}</p>
+              </motion.a>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );

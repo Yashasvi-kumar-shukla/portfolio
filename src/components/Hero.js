@@ -5,7 +5,7 @@ import './Hero.css';
 
 function Hero() {
   const [text] = useTypewriter({
-    words: ['Yashasvi', 'a Developer', 'a Problem Solver', 'a Programmer'],
+    words: ['Yashasvi', 'a Developer', 'a Problem Solver', 'a Programmer', 'a Freelancer'],
     loop: true,
     typeSpeed: 80,
     deleteSpeed: 50,
