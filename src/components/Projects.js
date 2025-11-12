@@ -2,6 +2,28 @@ import React, { useRef } from 'react';
 import './Projects.css';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
+const ProjectCard = ({ proj, scrollXProgress }) => {
+  const cardShadow = useTransform(
+    scrollXProgress, 
+    [0, 1], 
+    ['-15px 5px 20px rgba(0,0,0,0.3)', '15px 5px 20px rgba(0,0,0,0.3)']
+  );
+
+  return (
+    <motion.a
+      href={proj.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="glass card"
+      style={{ boxShadow: cardShadow }}
+      whileHover={{ scale: 1.05 }}
+    >
+      <h3>{proj.title}</h3>
+      <p>{proj.desc}</p>
+    </motion.a>
+  );
+};
+
 function Projects() {
   const projects = [
     {
@@ -29,7 +51,6 @@ function Projects() {
   const ref = useRef(null);
   const { scrollXProgress } = useScroll({ container: ref });
   const rotateY = useTransform(scrollXProgress, [0, 1], ['8deg', '-8deg']);
-  const shadowX = useTransform(scrollXProgress, [0, 1], ['-15px', '15px']);
 
   return (
     <section id="projects" className="projects">
@@ -40,29 +61,13 @@ function Projects() {
           ref={ref} 
           style={{ rotateY }} 
         >
-          {projects.map((proj, idx) => {
-            const cardShadow = useTransform(
-              scrollXProgress, 
-              [0, 1], 
-              ['-15px 5px 20px rgba(0,0,0,0.3)', '15px 5px 20px rgba(0,0,0,0.3)']
-            );
-
-            return (
-              <motion.a
-                key={idx}
-                href={proj.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="glass card"
-                // 6. Apply the dynamic box shadow
-                style={{ boxShadow: cardShadow }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <h3>{proj.title}</h3>
-                <p>{proj.desc}</p>
-              </motion.a>
-            );
-          })}
+          {projects.map((proj, idx) => (
+            <ProjectCard 
+              proj={proj} 
+              key={idx} 
+              scrollXProgress={scrollXProgress} 
+            />
+          ))}
         </motion.div>
       </div>
     </section>
