@@ -1,0 +1,159 @@
+.skills-section {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  padding: 100px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.skills-container {
+  max-width: 1000px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 80px;
+  align-self: flex-start;
+}
+
+.section-header h2 {
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* --- TIMELINE STRUCTRE --- */
+.timeline {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.timeline-center-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(0, 255, 65, 0.3);
+  transform: translateX(-50%);
+}
+
+.timeline-row {
+  display: flex;
+  justify-content: flex-start; /* Default to left */
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.timeline-row.right {
+  justify-content: flex-end;
+}
+
+/* --- THE DOTS --- */
+.timeline-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  background-color: #000;
+  border: 2px solid #00FF41;
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+/* --- THE CARDS --- */
+.timeline-card {
+  width: 45%; /* Takes up just less than half the screen to leave room for the center line */
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-category {
+  color: #00FF41;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.card-date {
+  color: #666;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.card-title {
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  margin: 0 0 15px 0;
+}
+
+.card-description {
+  color: #a0a0a0;
+  font-family: 'Courier New', monospace;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tech-tag {
+  background: rgba(0, 255, 65, 0.1);
+  color: #00FF41;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+/* Mobile Responsiveness: Stack it all on the left */
+@media (max-width: 768px) {
+  .timeline-center-line {
+    left: 20px;
+  }
+  .timeline-dot {
+    left: 20px;
+  }
+  .timeline-row {
+    justify-content: flex-end; /* Push all cards to the right */
+  }
+  .timeline-row.right {
+    justify-content: flex-end;
+  }
+  .timeline-card {
+    width: calc(100% - 60px); /* Fill remaining space minus padding */
+  }
+}

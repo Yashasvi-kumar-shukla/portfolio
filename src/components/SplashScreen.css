@@ -1,0 +1,99 @@
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  z-index: 999999; /* Absolute highest layer */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease-out;
+  color: #00FF41;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.splash-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-content {
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.sys-logo {
+  font-size: 2.5rem;
+  font-weight: bold;
+  letter-spacing: 5px;
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+}
+
+.blink-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+/* --- Terminal Boot Logs --- */
+.terminal-logs {
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  font-size: 0.9rem;
+}
+
+.log-line {
+  margin: 2px 0;
+}
+
+.old-log {
+  opacity: 0.4;
+}
+
+.current-log {
+  opacity: 1;
+  text-shadow: 0 0 8px rgba(0, 255, 65, 0.6);
+}
+
+/* --- Progress Bar --- */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.progress-bar {
+  flex-grow: 1;
+  height: 20px;
+  border: 1px solid #00FF41;
+  padding: 2px;
+  background: rgba(0, 255, 65, 0.05);
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #00FF41;
+  box-shadow: 0 0 15px #00FF41;
+  transition: width 0.05s linear;
+}
+
+.progress-text {
+  width: 50px;
+  text-align: right;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .sys-logo { font-size: 1.8rem; }
+  .terminal-logs { font-size: 0.8rem; height: 100px; }
+}

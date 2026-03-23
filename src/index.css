@@ -1,13 +1,81 @@
-body {
+/* --- Matrix Color Variables --- */
+:root {
+  --matrix-green: #00FF41;      /* The classic bright green */
+  --matrix-dark-green: #003B00; /* For subtle borders/shadows */
+  --matrix-bg: #0D0208;         /* Deep, slightly off-black */
+  --matrix-glow: rgba(0, 255, 65, 0.4);
+}
+
+/* --- Global Reset --- */
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  padding: 0;
+}
+
+html, body {
+  background-color: var(--matrix-bg);
+  color: var(--matrix-green);
+  font-family: 'Courier New', Courier, monospace; /* Monospace is essential */
+  
+  /* THE FIX: Changed 'hidden' to 'clip' to allow position: sticky to work! */
+  overflow-x: clip; 
+  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* --- The Typography Vibe --- */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--matrix-green);
+  text-shadow: 0 0 8px var(--matrix-glow);
+  font-weight: bold;
+}
+
+a {
+  color: var(--matrix-green);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+a:hover {
+  text-shadow: 0 0 12px var(--matrix-green);
+  border-bottom: 1px solid var(--matrix-green);
+}
+
+/* --- Custom Matrix Scrollbar --- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--matrix-dark-green);
+  border: 1px solid var(--matrix-green);
+  box-shadow: 0 0 5px var(--matrix-glow);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--matrix-green);
+}
+
+/* --- High-End Performance Optimization --- */
+/* This prevents "flickering" when 3D assets load on your M4 */
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+canvas {
+  touch-action: none; /* Prevents mobile scrolling from messing with 3D rotation */
+}
+
+/* Selection color (The highlight color when you drag your mouse) */
+::selection {
+  background: var(--matrix-green);
+  color: #000;
 }

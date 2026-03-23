@@ -1,0 +1,66 @@
+.terminal-window {
+  width: 900px;
+  height: 580px;
+  background: rgba(0, 5, 0, 0.95);
+  color: #00FF41;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  padding: 40px;
+  box-sizing: border-box; /* Keeps padding from pushing text off-screen */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  
+  /* CRITICAL FIX: Allows you to drag the laptop by clicking the green screen */
+  pointer-events: none; 
+}
+
+.terminal-content {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 10;
+}
+
+.terminal-content::-webkit-scrollbar {
+  display: none;
+}
+
+.line {
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+  text-shadow: 0 0 10px #00FF41;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  z-index: 20; /* Forces text to render on top of everything */
+}
+
+.input-line {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  z-index: 20;
+}
+
+.prompt {
+  color: #00FF41;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-right: 12px;
+}
+
+.terminal-window input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #00FF41;
+  font-family: inherit;
+  font-size: 1.6rem;
+  width: 100%;
+  text-shadow: 0 0 10px #00FF41;
+  
+  /* CRITICAL FIX: Re-enables clicking strictly for the text box so you can type */
+  pointer-events: auto; 
+}

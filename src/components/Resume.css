@@ -1,0 +1,210 @@
+.resume-section {
+  width: 100%;
+  background-color: #000;
+  position: relative;
+  z-index: 10;
+  border-top: 1px solid rgba(0, 255, 65, 0.2);
+  padding: 100px 5%;
+}
+
+.resume-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Header matched to the Projects section */
+.section-header-inline {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.section-header-inline h2 {
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* =========================================
+   THE EXTRACTION BOX (Download Card)
+   ========================================= */
+.resume-extraction-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #050a05;
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  padding: 40px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Adds a subtle scanning line effect to the box */
+.resume-extraction-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(0, 255, 65, 0.1), transparent);
+  transform: skewX(-20deg);
+  transition: all 0.5s ease;
+}
+
+.resume-extraction-box:hover {
+  border-color: rgba(0, 255, 65, 0.8);
+  box-shadow: 0 0 30px rgba(0, 255, 65, 0.1), inset 0 0 20px rgba(0, 255, 65, 0.1);
+}
+
+.resume-extraction-box:hover::before {
+  left: 200%;
+  transition: all 0.8s ease;
+}
+
+/* =========================================
+   FILE INFO & ICON
+   ========================================= */
+.file-info-group {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.file-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.file-icon {
+  width: 60px;
+  height: 80px;
+  border: 2px solid #00FF41;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 255, 65, 0.1);
+}
+
+/* The folded corner of the document */
+.file-icon::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 0;
+  height: 0;
+  border-bottom: 20px solid rgba(0, 255, 65, 0.3);
+  border-right: 20px solid #000;
+}
+
+.file-extension {
+  color: #00FF41;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.file-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-name {
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.file-meta {
+  color: #666;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-meta .highlight {
+  color: #00FF41;
+}
+
+.file-meta .divider {
+  color: #333;
+}
+
+/* =========================================
+   DOWNLOAD BUTTON
+   ========================================= */
+.btn-download {
+  background: rgba(0, 255, 65, 0.1);
+  color: #00FF41;
+  border: 1px solid #00FF41;
+  padding: 15px 30px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn-download:hover {
+  background: #00FF41;
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+}
+
+.blink-arrow {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 768px) {
+  .resume-extraction-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+  }
+  
+  .file-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .file-meta .divider {
+    display: none;
+  }
+
+  .btn-download {
+    width: 100%;
+    justify-content: center;
+  }
+}

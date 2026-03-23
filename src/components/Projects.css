@@ -1,43 +1,203 @@
-.projects {
-  padding: 4rem;
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  min-height: 50vh;
-  text-align: center;
-  color: #299bd8;
+.projects-section {
+  width: 100%;
+  background-color: #000;
+  position: relative;
+  z-index: 10;
+  border-top: 1px solid rgba(0, 255, 65, 0.2);
+  padding-bottom: 100px;
+  
+  /* CRITICAL: Allows vertical scroll but clips horizontal so the 150vw canvas doesn't break your site width */
+  overflow: visible;
+  overflow-x: clip; 
+}
+
+.projects-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  
+  /* NO ALIGN-ITEMS HERE! 
+     This allows the left column to stretch to the bottom of the section, 
+     giving the sticky canvas a long track to travel on. */
+  gap: 50px;
+  padding: 80px 5%;
   position: relative;
 }
 
-.carousel-wrap {
-  perspective: 600px;
-  padding: 2rem 0;
+/* =========================================
+   THE LEFT COLUMN
+   ========================================= */
+.projects-left-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.carousel {
-  display: flex; 
-  overflow-x: scroll; 
-  padding-bottom: 2rem; 
-  -ms-overflow-style: none;  
-  scrollbar-width: none;  
+/* The header scrolls up naturally as you scroll down the page */
+.section-header-inline {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 50px; 
+  position: relative;
+  z-index: 30; /* Ensures the header slides cleanly OVER the 3D models */
 }
 
-.carousel::-webkit-scrollbar {
-  display: none;
-}
-
-.card {
-  text-decoration: none;
+.section-header-inline h2 {
   color: #fff;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-  width: 300px;
-  margin: 0 1rem; 
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  padding: 2rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+/* =========================================
+   THE STICKY CANVAS WRAPPER
+   Only the 3D models freeze here. 
+   ========================================= */
+.sticky-canvas-wrapper {
+  position: -webkit-sticky; 
+  position: sticky;
+  top: 20vh; /* Freezes perfectly vertically */
+  height: 60vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+/* =========================================
+   THE DIVINE GLOW
+   ========================================= */
+.divine-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0, 255, 65, 0.15) 0%, transparent 65%);
+  filter: blur(40px);
+  pointer-events: none; 
+  z-index: 0; 
+}
+
+/* =========================================
+   THE FULL SCREEN BOUNDLESS CANVAS
+   ========================================= */
+.canvas-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  
+  /* Centers the massive canvas perfectly over the left column.
+     translateZ(0) prevents the infamous Safari UI drift bug. */
+  transform: translate(-50%, -50%) translateZ(0); 
+  
+  /* MASSIVE SIZE: Spans the whole screen so particles fly forever! */
+  width: 150vw;
+  height: 150vh; 
+  
+  background: transparent;
+  border: none;
+  z-index: 10;
+  
+  /* Disables the canvas from blocking your mouse so cards are clickable! */
+  pointer-events: none; 
+}
+
+/* =========================================
+   CUSTOM BROWSER UI (EXACTLY AS YOU SET IT)
+   ========================================= */
+.browser-window {
+  width: 535px;
+  height: 320px;
+  background: #020510;
+  border: 4px solid #00d2ff; 
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0 0 25px rgba(0, 210, 255, 0.15);
+  overflow: hidden;
+  box-sizing: border-box;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-19%, -53%); 
+  backface-visibility: hidden;
+}
+
+.browser-header { display: flex; flex-direction: column; }
+.browser-tab-container { display: flex; border-bottom: 4px solid #00d2ff; }
+.browser-tab {
+  padding: 10px 20px; border-right: 4px solid #00d2ff; color: #00d2ff;
+  font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 16px;
+  display: flex; align-items: center; gap: 12px; background: rgba(0, 210, 255, 0.15);
+}
+.close-x { font-size: 14px; opacity: 0.8; cursor: pointer; }
+.browser-address-bar { height: 18px; border-bottom: 4px solid #00d2ff; background: rgba(0, 210, 255, 0.05); }
+.browser-body { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
+.browser-symbol {
+  color: #00FF41; font-size: 120px; font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-weight: bold; text-shadow: 0 0 20px rgba(0, 255, 65, 0.8), 0 0 40px rgba(0, 255, 65, 0.4);
+  letter-spacing: -2px; user-select: none;
+}
+
+/* ========================================= */
+
+.projects-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40vh; 
+  padding-bottom: 40vh; 
+  
+  /* Elevates the cards to float gracefully OVER the flying particles! */
+  position: relative;
+  z-index: 20; 
+  pointer-events: auto; 
+}
+
+.project-card {
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  border-color: rgba(0, 255, 65, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 255, 65, 0.05);
+}
+
+.project-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.project-number { color: #00FF41; font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: bold; }
+.project-type-badge { background: rgba(255, 255, 255, 0.05); color: #a0a0a0; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; letter-spacing: 1px; }
+.project-title { color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; margin: 0 0 15px 0; }
+.project-description { color: #888; font-family: 'Courier New', monospace; font-size: 1rem; line-height: 1.6; margin-bottom: 30px; }
+.project-links { display: flex; gap: 15px; }
+
+.btn-terminal {
+  background: #00FF41; color: #000; border: none; padding: 10px 20px;
+  font-family: 'JetBrains Mono', monospace; font-weight: bold; cursor: pointer;
+  border-radius: 4px; transition: all 0.2s ease;
+}
+.btn-terminal:hover { background: #00cc33; box-shadow: 0 0 15px rgba(0, 255, 65, 0.4); }
+.btn-terminal.outline { background: transparent; color: #00FF41; border: 1px solid #00FF41; }
+.btn-terminal.outline:hover { background: rgba(0, 255, 65, 0.1); }
+
+@media (max-width: 900px) {
+  .projects-container { flex-direction: column; }
+  .sticky-canvas-wrapper {
+    position: relative;
+    top: 0;
+    height: 50vh;
+  }
+  .canvas-container {
+    height: 125vh; /* 50vh * 2.5 to maintain the exact 0.4 math ratio */
+  }
+  .projects-list { padding: 0; gap: 80px; }
 }
