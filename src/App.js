@@ -8,17 +8,16 @@ import Projects from './components/Projects';
 import Resume from './components/Resume'; 
 import Contact from './components/Contact'; 
 import Footer from './components/Footer'; 
+import './App.css'; // Ensure your CSS is linked!
 
 function App() {
   const [isBooting, setIsBooting] = useState(true);
 
-  // SYSTEM LOCK: Prevent scrolling during boot
+  // SYSTEM LOCK: Prevent scrolling during the Matrix boot sequence
   useEffect(() => {
     if (isBooting) {
       document.body.style.overflow = 'hidden';
     } else {
-      // THE FIX: Reset to an empty string instead of 'auto'. 
-      // This removes the inline style completely and saves position: sticky!
       document.body.style.overflow = ''; 
     }
     
@@ -29,24 +28,34 @@ function App() {
   }, [isBooting]);
 
   return (
-    <div style={{ position: 'relative', backgroundColor: '#000' }}>
+    <div className="App" style={{ position: 'relative', backgroundColor: '#000' }}>
       
       {/* 1. THE SPLASH SCREEN LAYER */}
       {isBooting && <SplashScreen onComplete={() => setIsBooting(false)} />}
       
       {/* 2. THE MAIN APP WRAPPER */}
-      <div style={{ 
-        opacity: isBooting ? 0 : 1, 
-        pointerEvents: isBooting ? 'none' : 'auto',
-        transition: 'opacity 0.8s ease-in' 
-      }}>
-        
+      <div 
+        className="app-content-wrapper"
+        style={{ 
+          opacity: isBooting ? 0 : 1, 
+          pointerEvents: isBooting ? 'none' : 'auto',
+          transition: 'opacity 0.8s ease-in' 
+        }}
+      >
         <Navbar />
-        <Hero3D /> 
         
-        <div style={{ height: '100vh', width: '100%' }}></div>
+        {/* Fixed 3D Background */}
+        <Hero3D /> 
 
-        <div style={{ position: 'relative', zIndex: 10, backgroundColor: '#000' }}>
+        {/* THE MASTER FIX: THE GLASS SHIELD */}
+        {/* Invisible physical barrier on mobile to catch swipes and force native scrolling */}
+        <div className="mobile-glass-shield"></div>
+        
+        {/* Spacer to push content down below the initial Hero viewport */}
+        <div className="scroll-spacer"></div>
+
+        {/* Foreground Content Sections */}
+        <div className="section-container" style={{ position: 'relative', zIndex: 10, backgroundColor: '#000' }}>
           <About />
           <Skills />
           <Projects />

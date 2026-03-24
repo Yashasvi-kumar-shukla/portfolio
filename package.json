@@ -2,7 +2,6 @@
   "homepage": "https://Yashasvi-kumar-shukla.github.io/portfolio",
   "name": "my-portfolio",
   "version": "0.1.0",
-  "homepage": "https://Yashasvi-kumar-shukla.github.io/portfolio",
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
