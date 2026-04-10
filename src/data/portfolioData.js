@@ -12,6 +12,11 @@ export const projectsData = [
     description: "[UNDER PRODUCTION] A multi-role hyperlocal delivery platform designed to connect customers, delivery partners, and service providers. The system includes features like order management, role-based access, and scalable backend architecture for real-time operations." 
   },
   { 
+    title: "Comfy E-Mobility", 
+    type: "web",
+    description: "A comprehensive frontend React application serving as the digital storefront for sustainable urban transport. It features dynamic informational modules, service request forms, and dedicated partnership portals for advertising, product sales, and general inquiries." 
+  },
+  { 
     title: "Apex Logic Website", 
     type: "web",
     description: "Developed a custom full-stack website based on client requirements, handling both frontend and backend development. The platform includes responsive UI design and has been successfully deployed for live use, ensuring a smooth user experience across devices." 

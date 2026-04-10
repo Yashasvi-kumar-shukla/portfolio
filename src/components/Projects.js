@@ -20,8 +20,8 @@ const ProjectCard = ({ project, index, setActiveType }) => {
   // THE FIX: Precise Button Logic & Routing
   const titleLower = project.title.toLowerCase();
   
-  // Hide VIEW_SOURCE for Comfy Porter and LMS Portal
-  const showViewSource = !titleLower.includes('comfy porter') && !titleLower.includes('lms');
+  // Hide VIEW_SOURCE for LMS Portal (but SHOW it for Comfy)
+  const showViewSource = !titleLower.includes('lms');
   
   // Hide INITIATE_LINK for Apps, LMS, Apex Logic, and Portfolio
   const hideLinkKeywords = ['lms', 'apex', 'portfolio'];
@@ -30,7 +30,9 @@ const ProjectCard = ({ project, index, setActiveType }) => {
 
   // Route the user to the correct link based on the project title
   const handleViewSource = () => {
-    if (titleLower.includes('payflow')) {
+    if (titleLower.includes('comfy')) {
+      window.open('https://www.comfyemobility.com/', '_blank');
+    } else if (titleLower.includes('payflow')) {
       window.open('https://play.google.com/store/apps/details?id=com.rinzler.offline_expense_tracker', '_blank');
     } else if (titleLower.includes('apex')) {
       window.open('https://apexlogic.in/', '_blank');
