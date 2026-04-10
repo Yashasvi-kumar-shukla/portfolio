@@ -57,11 +57,6 @@ const ProjectCard = ({ project, index, setActiveType }) => {
             {'>'} VIEW_SOURCE
           </button>
         )}
-        {showInitiateLink && (
-          <button className="btn-terminal outline">
-            {'>'} INITIATE_LINK
-          </button>
-        )}
       </div>
     </div>
   );
