@@ -1,181 +1,176 @@
 import React, { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
+import { developerProfile } from '../data/portfolioData';
 import './Contact.css';
 
 const Contact = () => {
-  const formRef = useRef();
+  const formRef = useRef(null);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [focusedField, setFocusedField] = useState(null);
-  const [submitState, setSubmitState] = useState('idle'); // idle, encrypting, sent, error
-  const [terminalLog, setTerminalLog] = useState([
-    "INITIALIZING_SECURE_SOCKET...",
-    "AWAITING_USER_INPUT..."
+  const [status, setStatus] = useState('idle'); // idle | sending | sent | error
+  const [logs, setLogs] = useState([
+    '> Comms socket ready.',
+    '> Fill out the form to dispatch a direct message.'
   ]);
+
+  const appendLog = (entry) => {
+    setLogs((prev) => {
+      const next = [...prev, entry];
+      return next.length > 5 ? next.slice(next.length - 5) : next;
+    });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
-    if (value.length > 0 && value.length % 5 === 0) { 
-      addLog(`> COMPILING_${name.toUpperCase()}_DATA_BLOCK...`);
-    }
-  };
-
-  const handleFocus = (field) => {
-    setFocusedField(field);
-    addLog(`> TARGET_LOCKED: ${field.toUpperCase()}`);
-  };
-
-  const addLog = (msg) => {
-    setTerminalLog(prev => {
-      const newLogs = [...prev, msg];
-      return newLogs.length > 5 ? newLogs.slice(1) : newLogs;
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      addLog("> ERROR: INCOMPLETE_DATA_PACKET");
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setStatus('error');
+      appendLog('> Validation error: All fields are required.');
       return;
     }
 
-    setSubmitState('encrypting');
-    addLog("> INITIATING_HANDSHAKE...");
-    addLog("> ENCRYPTING_PAYLOAD [RSA-4096]...");
-    addLog("> ESTABLISHING_UPLINK...");
+    setStatus('sending');
+    appendLog(`> Preparing packet from ${formData.name.trim()}...`);
+    appendLog('> Dispatching via EmailJS relay...');
 
-    const serviceID = 'service_ejrs3cv';
-    const templateID = 'template_gwyas08';
-    const publicKey = 'ykM9XCkKI6JDORJRt';
+    const serviceID = process.env.REACT_APP_EMAILJS_SERVICE_ID || 'service_ejrs3cv';
+    const templateID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'template_gwyas08';
+    const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'ykM9XCkKI6JDORJRt';
 
-    emailjs.sendForm(serviceID, templateID, formRef.current, publicKey)
-      .then((result) => {
-          setSubmitState('sent');
-          addLog("> TRANSMISSION_SUCCESSFUL.");
-          addLog("> CONNECTION_SEVERED.");
-          setFormData({ name: '', email: '', message: '' });
-          
-          setTimeout(() => setSubmitState('idle'), 5000);
-      }, (error) => {
-          setSubmitState('error');
-          addLog("> ERROR: TRANSMISSION_FAILED.");
-          console.log("SYSTEM ERROR DETAILS:", error.text);
-          
-          setTimeout(() => setSubmitState('idle'), 5000);
-      });
+    emailjs.sendForm(serviceID, templateID, formRef.current, publicKey).then(
+      () => {
+        setStatus('sent');
+        appendLog('> 200 OK — Message delivered successfully.');
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setStatus('idle'), 5000);
+      },
+      (error) => {
+        setStatus('error');
+        appendLog(`> Delivery failed: ${error?.text || 'Network error'}`);
+        setTimeout(() => setStatus('idle'), 5000);
+      }
+    );
   };
 
   return (
-    <section className="contact-section" id="contact">
-      <div className="contact-container">
-        
-        {/* --- NEW HEADER SECTION --- */}
-        <div className="contact-header-container">
-          <div className="section-header-inline">
-            <span className="header-prefix">{'//'}</span>
-            <h2>CONTACT ME</h2>
-          </div>
-          
-          <p className="contact-subtitle">
-            If you're working on a project or have an idea you'd like to bring to life, feel free to reach out.
-            <br /><br />
-            I’m open to discussing web and mobile applications, MVP builds, and custom software solutions.
-            <br /><br />
-            Let’s connect and see how we can build something meaningful.
+    <section className="section-wrapper" id="contact">
+      <div className="section-inner">
+        <div className="section-header">
+          <span className="section-eyebrow">// 05. Start a Conversation</span>
+          <h2 className="section-title">Let’s Build Something Meaningful</h2>
+          <p className="section-subtitle">
+            Working on a web platform, mobile app, or MVP build? Send a message below or connect
+            directly via email, GitHub, or LinkedIn.
           </p>
         </div>
 
-        {/* --- CONTACT INTERFACE --- */}
-        <div className="contact-interface">
-          
-          {/* LEFT: Live Terminal Readout */}
-          <div className="terminal-readout">
-            <div className="terminal-header">
-              <span className="dot red"></span>
-              <span className="dot yellow"></span>
-              <span className="dot green"></span>
-              <span className="terminal-title">sys_log@comms</span>
+        <div className="contact-layout">
+          <div className="contact-info-panel">
+            <div className="contact-direct-cards">
+              <a href={`mailto:${developerProfile.email}`} className="direct-card">
+                <span className="direct-label">Direct Email</span>
+                <span className="direct-value">{developerProfile.email}</span>
+              </a>
+
+              <a
+                href={developerProfile.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="direct-card"
+              >
+                <span className="direct-label">LinkedIn</span>
+                <span className="direct-value">linkedin.com/in/yashasvi-kumar-shukla ↗</span>
+              </a>
+
+              <a
+                href={developerProfile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="direct-card"
+              >
+                <span className="direct-label">GitHub</span>
+                <span className="direct-value">github.com/Yashasvi-kumar-shukla ↗</span>
+              </a>
             </div>
-            <div className="terminal-body">
-              {terminalLog.map((log, index) => (
-                <div key={index} className="log-line">{log}</div>
-              ))}
-              <div className="log-line active">
-                <span className="blink">█</span>
+
+            <div className="activity-console">
+              <div className="console-header">
+                <span>dispatch@yashasvi.dev</span>
+                <span className="console-status-pill">● TLS READY</span>
+              </div>
+              <div className="console-body">
+                {logs.map((line, i) => (
+                  <div key={i} className="console-line">
+                    {line}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* RIGHT: The Contact Form */}
-          <form ref={formRef} className="contact-form" onSubmit={handleSubmit}>
-            
-            <div className={`input-group ${focusedField === 'name' ? 'focused' : ''}`}>
-              <label>{'//'} IDENTIFIER_ID</label>
-              <div className="input-wrapper">
-                <span className="bracket left">[</span>
-                <input 
-                  type="text" 
-                  name="name" 
-                  value={formData.name}
-                  onChange={handleChange}
-                  onFocus={() => handleFocus('name')}
-                  onBlur={() => setFocusedField(null)}
-                  placeholder="Enter your name..."
-                  autoComplete="off"
-                />
-                <span className="bracket right">]</span>
-              </div>
+          <form ref={formRef} className="contact-form-card" onSubmit={handleSubmit} noValidate>
+            <div className="form-field">
+              <label htmlFor="contact-name">Your Name</label>
+              <input
+                id="contact-name"
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="e.g. Rohan Sharma"
+                required
+              />
             </div>
 
-            <div className={`input-group ${focusedField === 'email' ? 'focused' : ''}`}>
-              <label>{'//'} ROUTING_ADDRESS</label>
-              <div className="input-wrapper">
-                <span className="bracket left">[</span>
-                <input 
-                  type="email" 
-                  name="email" 
-                  value={formData.email}
-                  onChange={handleChange}
-                  onFocus={() => handleFocus('email')}
-                  onBlur={() => setFocusedField(null)}
-                  placeholder="Enter your email..."
-                  autoComplete="off"
-                />
-                <span className="bracket right">]</span>
-              </div>
+            <div className="form-field">
+              <label htmlFor="contact-email">Email Address</label>
+              <input
+                id="contact-email"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="you@company.com"
+                required
+              />
             </div>
 
-            <div className={`input-group ${focusedField === 'message' ? 'focused' : ''}`}>
-              <label>{'//'} ENCRYPTED_MESSAGE</label>
-              <div className="input-wrapper textarea-wrapper">
-                <span className="bracket left">[</span>
-                <textarea 
-                  name="message" 
-                  value={formData.message}
-                  onChange={handleChange}
-                  onFocus={() => handleFocus('message')}
-                  onBlur={() => setFocusedField(null)}
-                  placeholder="Type your message here..."
-                  rows="5"
-                ></textarea>
-                <span className="bracket right">]</span>
-              </div>
+            <div className="form-field">
+              <label htmlFor="contact-message">Project Details / Message</label>
+              <textarea
+                id="contact-message"
+                name="message"
+                rows="5"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Tell me about your project scope, timeline, or goals..."
+                required
+              />
             </div>
 
-            <button 
-              type="submit" 
-              className={`btn-transmit ${submitState !== 'idle' ? 'processing' : ''}`}
-              disabled={submitState !== 'idle'}
+            {status === 'sent' && (
+              <div className="form-feedback success" role="status">
+                Message sent! I will get back to you shortly.
+              </div>
+            )}
+
+            {status === 'error' && (
+              <div className="form-feedback error" role="alert">
+                Please fill in all fields or try again if the network request failed.
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="btn-primary btn-submit-form"
+              disabled={status === 'sending'}
             >
-              {submitState === 'idle' && <><span className="arrow">{'>'}</span> TRANSMIT_MESSAGE</>}
-              {submitState === 'encrypting' && <span className="glitch-text">ENCRYPTING...</span>}
-              {submitState === 'sent' && <span className="success-text">TRANSMISSION_SECURE</span>}
-              {submitState === 'error' && <span className="error-text" style={{color: '#ff5f56'}}>UPLINK_FAILED</span>}
+              {status === 'sending' ? 'Sending Message...' : 'Send Message →'}
             </button>
-
           </form>
-
         </div>
       </div>
     </section>

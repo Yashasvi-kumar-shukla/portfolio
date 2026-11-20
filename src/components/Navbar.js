@@ -1,54 +1,70 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Navbar.css';
 
-const Navbar = () => {
-  const [isVisible, setIsVisible] = useState(false);
+const Navbar = ({ onOpenTerminal }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Show navbar after scrolling past the 100vh Hero section
-      if (window.scrollY >= window.innerHeight - 50) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
+  const navItems = [
+    { label: 'Overview', href: '#about' },
+    { label: 'Skills', href: '#skills' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Resume', href: '#resume' }
+  ];
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Function to smoothly scroll back to the 3D Hero section
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleNavClick = () => {
+    setMenuOpen(false);
   };
 
   return (
-    <nav className={`navbar ${isVisible ? 'visible' : 'hidden'}`}>
-      <div className="nav-container">
-        
-        {/* Clickable Logo */}
-        <div className="nav-logo" onClick={scrollToTop}>
-          <span className="user-prompt">yashasvi@sys</span>
-          <span className="colon">:</span>
-          <span className="tilde">~</span>
-          <span className="dollar">$</span>
-        </div>
+    <header className="navbar">
+      <div className="nav-inner">
+        <a href="#top" className="nav-brand" onClick={handleNavClick}>
+          <span className="brand-badge">YS</span>
+          <span className="brand-text">
+            Yashasvi<span className="brand-dot">.dev</span>
+          </span>
+        </a>
 
-        <div className="nav-links">
-          <a href="#about" className="nav-link"><span className="link-prefix">~/</span>overview</a>
-          <a href="#skills" className="nav-link"><span className="link-prefix">~/</span>skills</a>
-          <a href="#projects" className="nav-link"><span className="link-prefix">~/</span>projects</a>
-          <a href="#resume" className="nav-link"><span className="link-prefix">~/</span>resume</a>
-          
-          {/* Highlighted Contact Button */}
-          <a href="#contact" className="nav-link nav-contact-btn">
-            <span className="link-prefix">~/</span>Contact ME
+        <nav className={`nav-menu ${menuOpen ? 'open' : ''}`} aria-label="Primary Navigation">
+          {navItems.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="nav-link"
+              onClick={handleNavClick}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="nav-actions">
+          <button
+            type="button"
+            className="btn-cli-trigger"
+            onClick={onOpenTerminal}
+            title="Open Interactive Developer Terminal"
+          >
+            <span className="cli-prompt-icon">&gt;_</span>
+            <span className="cli-label-text">CLI Mode</span>
+          </button>
+
+          <a href="#contact" className="btn-nav-cta" onClick={handleNavClick}>
+            Contact Me
           </a>
-        </div>
 
+          <button
+            type="button"
+            className="mobile-menu-btn"
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((prev) => !prev)}
+          >
+            {menuOpen ? '✕' : '☰'}
+          </button>
+        </div>
       </div>
-    </nav>
+    </header>
   );
 };
 

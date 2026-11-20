@@ -1,46 +1,54 @@
 import React from 'react';
+import { developerProfile } from '../data/portfolioData';
 import './Resume.css';
 
 const Resume = () => {
   return (
-    <section className="resume-section" id="resume">
-      <div className="resume-container">
-        
-        <div className="section-header-inline">
-          <span className="header-prefix">{'//'}</span>
-          <h2>RESUME</h2>
+    <section className="section-wrapper" id="resume">
+      <div className="section-inner">
+        <div className="section-header">
+          <span className="section-eyebrow">// 04. Curriculum Vitae</span>
+          <h2 className="section-title">Resume &amp; Credentials</h2>
         </div>
 
-        <div className="resume-extraction-box">
-          
-          <div className="file-info-group">
-            {/* A simple CSS-drawn file icon */}
-            <div className="file-icon-wrapper">
-              <div className="file-icon">
-                <span className="file-extension">PDF</span>
-              </div>
+        <div className="resume-card">
+          <div className="resume-left">
+            <div className="resume-file-badge" aria-hidden="true">
+              <span className="resume-file-ext">PDF</span>
+              <span className="resume-file-size">192 KB</span>
             </div>
-            
-            <div className="file-details">
-              <h3 className="file-name">yashasvi_resume.pdf</h3>
-              <p className="file-meta">
-                <span>STATUS: <span className="highlight">SECURE</span></span>
-                <span className="divider">|</span>
-                <span>SIZE: 192KB</span>
+
+            <div>
+              <h3 className="resume-title">yashasvi_resume.pdf</h3>
+              <p className="resume-meta">
+                Full-Stack Web &amp; Mobile Engineer — Experience, Technical Stack &amp; Deployed Projects
               </p>
+              <div className="resume-tags">
+                <span>• Verified Document</span>
+                <span>• Direct PDF Download</span>
+              </div>
             </div>
           </div>
 
-          {/* Google Drive Direct Download Link */}
-          <a 
-            href="https://drive.google.com/uc?export=download&id=1c01Na6zZjo8RuqUHL_sxWB5PJJ7AqGK3" 
-            className="btn-download"
-          >
-            <span className="blink-arrow">{'>'}</span> INITIATE_DOWNLOAD
-          </a>
-
+          <div className="resume-actions">
+            <a
+              href={developerProfile.resumePreviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+            >
+              Preview PDF ↗
+            </a>
+            <a
+              href={developerProfile.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+            >
+              Download Resume ↓
+            </a>
+          </div>
         </div>
-
       </div>
     </section>
   );

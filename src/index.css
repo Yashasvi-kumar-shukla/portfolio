@@ -1,81 +1,182 @@
-/* --- Matrix Color Variables --- */
+/* =========================================================
+   GLOBAL DESIGN TOKENS & BASE RESET
+   ========================================================= */
 :root {
-  --matrix-green: #00FF41;      /* The classic bright green */
-  --matrix-dark-green: #003B00; /* For subtle borders/shadows */
-  --matrix-bg: #0D0208;         /* Deep, slightly off-black */
-  --matrix-glow: rgba(0, 255, 65, 0.4);
+  --bg-primary: #07090e;
+  --bg-secondary: #0c1018;
+  --bg-card: #111622;
+  --bg-card-hover: #161d2c;
+  --bg-glass: rgba(12, 16, 24, 0.82);
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --accent-primary: #10b981;
+  --accent-primary-hover: #059669;
+  --accent-primary-soft: rgba(16, 185, 129, 0.12);
+  --accent-secondary: #38bdf8;
+  --accent-secondary-soft: rgba(56, 189, 248, 0.12);
+  --accent-warning: #f59e0b;
+  --accent-warning-soft: rgba(245, 158, 11, 0.12);
+  --accent-danger: #ef4444;
+
+  --border-subtle: rgba(148, 163, 184, 0.12);
+  --border-strong: rgba(148, 163, 184, 0.24);
+  --border-accent: rgba(16, 185, 129, 0.4);
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 30px rgba(16, 185, 129, 0.15);
 }
 
-/* --- Global Reset --- */
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body {
-  background-color: var(--matrix-bg);
-  color: var(--matrix-green);
-  font-family: 'Courier New', Courier, monospace; /* Monospace is essential */
-  
-  /* THE FIX: Changed 'hidden' to 'clip' to allow position: sticky to work! */
-  overflow-x: clip; 
-  
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- The Typography Vibe --- */
-h1, h2, h3, h4, h5, h6 {
-  color: var(--matrix-green);
-  text-shadow: 0 0 8px var(--matrix-glow);
-  font-weight: bold;
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: clip;
+}
+
+#root {
+  min-height: 100vh;
 }
 
 a {
-  color: var(--matrix-green);
+  color: inherit;
   text-decoration: none;
-  transition: all 0.3s ease;
-  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
-a:hover {
-  text-shadow: 0 0 12px var(--matrix-green);
-  border-bottom: 1px solid var(--matrix-green);
+button,
+input,
+textarea {
+  font-family: inherit;
 }
 
-/* --- Custom Matrix Scrollbar --- */
+img,
+svg,
+canvas {
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--accent-primary);
+  color: #04100b;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #000;
+  background: var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--matrix-dark-green);
-  border: 1px solid var(--matrix-green);
-  box-shadow: 0 0 5px var(--matrix-glow);
+  background: #1e293b;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--matrix-green);
+  background: #334155;
 }
 
-/* --- High-End Performance Optimization --- */
-/* This prevents "flickering" when 3D assets load on your M4 */
-#root {
+/* Shared Section Utilities */
+.section-wrapper {
+  padding: 104px 24px;
+  position: relative;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.section-inner {
+  max-width: 1180px;
+  margin: 0 auto;
   width: 100%;
-  height: 100%;
 }
 
-canvas {
-  touch-action: none; /* Prevents mobile scrolling from messing with 3D rotation */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 48px;
 }
 
-/* Selection color (The highlight color when you drag your mouse) */
-::selection {
-  background: var(--matrix-green);
-  color: #000;
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 660px;
+  line-height: 1.65;
+}
+
+/* Shared Keyframes */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.92);
+  }
+}
+
+@keyframes cursorBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-wrapper {
+    padding: 76px 20px;
+  }
 }

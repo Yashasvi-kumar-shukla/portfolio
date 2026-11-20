@@ -1,51 +1,38 @@
 import React from 'react';
+import { developerProfile } from '../data/portfolioData';
 import './Footer.css';
 
-const Footer = () => {
+const Footer = ({ onOpenTerminal }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <footer className="footer-section">
-      <div className="footer-container">
-        
-        {/* --- Top: Social & Contact Links --- */}
+    <footer className="footer">
+      <div className="footer-inner">
+        <div className="footer-left">
+          <span className="footer-brand">{developerProfile.name}</span>
+          <span className="footer-copy">
+            © {new Date().getFullYear()} All rights reserved. Built with React.
+          </span>
+        </div>
+
         <div className="footer-links">
-          <a href="https://github.com/Yashasvi-kumar-shukla" target="_blank" rel="noopener noreferrer" className="footer-link">
-            <span className="bracket">[</span> GITHUB <span className="bracket">]</span>
+          <a href={developerProfile.github} target="_blank" rel="noopener noreferrer">
+            GitHub
           </a>
-          <a href="https://www.linkedin.com/in/yashasvi-kumar-shukla/" target="_blank" rel="noopener noreferrer" className="footer-link">
-            <span className="bracket">[</span> LINKEDIN <span className="bracket">]</span>
+          <a href={developerProfile.linkedin} target="_blank" rel="noopener noreferrer">
+            LinkedIn
           </a>
-          <a href="mailto:yashasvishukla2002@gmail.com" className="footer-link">
-            <span className="bracket">[</span> EMAIL <span className="bracket">]</span>
-          </a>
+          <a href={`mailto:${developerProfile.email}`}>Email</a>
+          <button type="button" className="footer-cli-btn" onClick={onOpenTerminal}>
+            &gt;_ Terminal
+          </button>
         </div>
 
-        {/* --- Middle: Glowing Divider --- */}
-        <div className="footer-divider"></div>
-
-        {/* --- Bottom: System Status, Copyright, & Scroll to Top --- */}
-        <div className="footer-bottom">
-          
-          <div className="footer-status">
-            <div className="status-dot"></div>
-            <span>SYS.STATUS: <span className="highlight-green">ONLINE</span></span>
-          </div>
-
-          <div className="footer-copyright">
-            <p>© {new Date().getFullYear()} Yashasvi Kumar Shukla.</p>
-          </div>
-
-          <div className="footer-action">
-            <button onClick={scrollToTop} className="btn-top">
-              <span className="carat">^</span> RETURN_0
-            </button>
-          </div>
-
-        </div>
-
+        <button type="button" className="btn-back-top" onClick={scrollToTop}>
+          ↑ Back to Top
+        </button>
       </div>
     </footer>
   );

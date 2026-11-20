@@ -1,78 +1,56 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useInView } from 'framer-motion';
+import React from 'react';
+import { developerProfile, engineeringPillars } from '../data/portfolioData';
 import './About.css';
-
-// The Cipher Animation Component
-const CipherReveal = ({ text }) => {
-  const [displayText, setDisplayText] = useState("");
-  const ref = useRef(null);
-  
-  // THE BUG FIX: Removed the negative margin. 
-  // 'amount: 0.1' means it triggers when just 10% of the element is visible.
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
-
-  useEffect(() => {
-    if (!isInView) {
-      setDisplayText("");
-      return;
-    }
-
-    // Hacker-style characters for the scramble
-    const chars = "!<>-_\\\\/[]{}—=+*^?#";
-    let iteration = 0;
-    
-    // We increase the step size so longer paragraphs decode faster
-    const step = Math.max(1, text.length / 60); 
-
-    const interval = setInterval(() => {
-      setDisplayText(
-        text.split("").map((letter, index) => {
-          if (index < iteration) {
-            return text[index];
-          }
-          if (text[index] === " ") {
-            return " ";
-          }
-          return chars[Math.floor(Math.random() * chars.length)];
-        }).join("")
-      );
-
-      if (iteration >= text.length) {
-        clearInterval(interval);
-      }
-
-      iteration += step;
-    }, 30); 
-
-    return () => clearInterval(interval);
-  }, [isInView, text]);
-
-  // Added a min-height placeholder so the sensor has something to actually "see"
-  return <span ref={ref} style={{ display: 'inline-block', minHeight: '1em' }}>{displayText}</span>;
-};
 
 const About = () => {
   return (
-    <section className="about-section" id="about">
-      <div className="about-container">
-        
-        <div className="about-header">
-          <span className="header-prefix">{'//'}</span>
-          <h2><CipherReveal text="OVERVIEW" /></h2>
+    <section className="section-wrapper" id="about">
+      <div className="section-inner">
+        <div className="section-header">
+          <span className="section-eyebrow">// 01. Engineering Overview</span>
+          <h2 className="section-title">Practical software built for real-world users.</h2>
         </div>
 
-        <p className="about-bio">
-          <CipherReveal 
-            text="I’m a full-stack developer with a strong focus on building MVP products for startups and small businesses. My work spans mobile app development using Flutter and web platforms using React, Node.js, and Django, allowing me to handle complete product development from frontend to backend. I have experience working on real-world systems including payment integrations, backend architectures, and scalable application design. I approach development with a problem-solving mindset, focusing on building solutions that are practical, efficient, and easy to evolve over time. My goal is to help ideas move from concept to working products that can be tested, improved and grown." 
-          />
-        </p>
+        <div className="about-grid">
+          <div className="about-narrative">
+            <p>
+              I’m <strong>{developerProfile.name}</strong>, a full-stack software developer focused on
+              turning product ideas into reliable, production-ready web and mobile applications for
+              startups and growing businesses.
+            </p>
+            <p>
+              My core stack spans cross-platform mobile development with <strong>Flutter</strong> and
+              full-stack web systems using <strong>React, Node.js, and Django</strong>—allowing me to
+              own database schemas, backend APIs, payment integrations, and responsive user interfaces
+              end to end.
+            </p>
+            <p>
+              I approach engineering with a problem-solving mindset: prioritizing clean architecture,
+              fast iteration, and software that is straightforward to maintain and scale as user
+              demand grows.
+            </p>
 
-        <div className="about-decoration">
-          <div className="dec-line"></div>
-          <span className="dec-status">[STATUS: ONLINE]</span>
-          <div className="dec-line"></div>
+            <div className="about-status-bar">
+              <span className="status-badge-online">
+                <span className="status-badge-dot"></span>
+                SYSTEM STATUS: ONLINE
+              </span>
+              <span className="status-location">{developerProfile.location}</span>
+            </div>
+          </div>
+
+          <div className="pillars-list">
+            {engineeringPillars.map((pillar) => (
+              <article key={pillar.number} className="pillar-card">
+                <div className="pillar-top">
+                  <span className="pillar-num">{pillar.number}</span>
+                  <h3 className="pillar-title">{pillar.title}</h3>
+                </div>
+                <p className="pillar-desc">{pillar.description}</p>
+              </article>
+            ))}
+          </div>
         </div>
-
       </div>
     </section>
   );
